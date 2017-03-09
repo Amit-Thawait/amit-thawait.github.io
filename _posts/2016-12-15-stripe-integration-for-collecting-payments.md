@@ -65,7 +65,7 @@ The reason why we need to integrate with a third party service for tax calculati
 
 > "Charging the legally appropriate amount of tax on orders is especially tricky for online sales. The right percentage to charge–if any–depends upon the customer's country or US state, the types of products being purchased, and the order total. To help businesses dynamically calculate and apply accurate taxes in real-time, Stripe has partnered with Avalara, TaxJar, and Taxamo."
 
-First you need to signup in (TaxJar)[https://www.taxjar.com/]{:target="_blank"}.
+First you need to signup in [TaxJar](https://www.taxjar.com/){:target="_blank"}.
 
 To use TaxJar using Ruby, install the taxjar-ruby gem using the command :
 
