@@ -134,6 +134,45 @@ That was it actually. I understood that the shipping cost callback is stuck wait
 
 I solved this by running 2 processes of thin server in localhost at 2 different ports and hardcoding the shipping json in callback.
 
+Add `gem thin` to your Gemfile. Run `bundle install` to install thin gem.
+
+You can start 2 process of thin server using the command `thin start --servers 2`
+
+<p align="middle">
+	<img src="../assets/images/stripe_custom_shipping/thin_server.png" alt="Thin Server">
+	<figcaption align="middle">Thin Server</figcaption>
+</p>
+
+Now we need to use second process running on port 3001 for the shipping callback.
+
+We also need to tunneling to localhost which Stripe can use to send the POST request of shipping callback. For this we need to use [ngrok](https://ngrok.com/){:target="_blank"}
+
+Download the installable and go to the installed directory and start ngrok in port 3001. Run
+
+`./ngrok http 3001` in the terminal.
+
+It will start a secure tunnels to your localhost which will look like this :
+
+<p align="middle">
+	<img src="../assets/images/stripe_custom_shipping/ngrok.png" alt="ngrok">
+	<figcaption align="middle">ngrok tunnel</figcaption>
+</p>
+
+Just copy the https tunnel URL and paste it in stripe dashboard business setting :
+
+<p align="middle">
+	<img src="../assets/images/stripe_custom_shipping/stripe_callback_setting.png" alt="callback setting">
+	<figcaption align="middle">Stripe shipping callback</figcaption>
+</p>
+
+The full callback URL should be something like `https://a06f1d8d.ngrok.io/stripe_payments/shipping_cost` which needs to be entered in callback field shown in the image.
+
 Even after resolving this issue, I was getting timeout issue because when I replaced my hard-coded shipping option with the dynamic one, my shipping callback was actually taking more than 10 seconds because I was making 2 API calls internally, one for easypost and one for taxjar to get the appropriate shipping amount along with tax.
 
 I solved this is doing this just before Stripe::Order create call, there by preventing timeout of 10 seconds.
+
+Sample order_update json looks like this
+
+<script src="https://gist.github.com/Amit-Thawait/7b624343d2c5a13297049808e62d4126.js"></script>
+
+You need to note that all the amounts mentioned here are in lowest denomination i.e; cents. Hence you need to be careful about passing only integer values in all the amount fields. Passing a float value (which got passed in my case in the amount field of tax_items becuase of multiplication of a float percent value with the item amount value) will result in an error : <span class="text-red">Order creation failed while contacting the provider</span>.
