@@ -180,4 +180,4 @@ You need to note that all the amounts mentioned here are in lowest denomination 
 
 If you are facing issues related to Stripe custom shipping callback and this post didn't helped in solving one then post a comment and I will try to help you out or else write to stripe support at support@stripe.com explaining your issue and they will definitely get back to you.
 
-I would like thank Fred (from Stripe Support) who helped me to get this working and even following back with me each time I was struck. 
+I would like to thank Fred (from Stripe Support) who helped me a lot to get this done and was even following back with me each time I was struck. 
