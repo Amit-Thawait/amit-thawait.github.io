@@ -1,48 +1,46 @@
 ---
 title: Custom/Dynamic shipping cost for Stripe Orders
 layout: post
-published: false
+published: true
 category: programming
 tags: [ruby, stripe]
 comments: true
 ---
 
-I hope you are familier with [Stripe](https://stripe.com/){:target="_blank"} for selling products. If you are selling physical goods then there comes question of shipping it to the buyer.
+I am writing this post to basically address two issues that I faced during integrating custom shipping callback with Stripe. Those two issues are <span class="text-red">(Status 402) (Request req_ACwwhHZi9QVD9t) The request timed out while contacting the upstream."</span> and <span class="text-red">Order creation failed while contacting the provider</span>.
 
-Stripe provides 4 options to add shipping cost to the product total amount which you can use to ship with the help of external shipping service provider. The 4 different options provided in stripe relay dashboard for shipping are :
+I hope you are familier with [Stripe](https://stripe.com/){:target="_blank"} for selling products. If you are selling physical goods then there comes a question of shipping it to the buyer.
+
+Stripe provides 4 options to add shipping cost to the product's total amount which you can use to ship with the help of an external shipping service provider. The 4 different options provided in stripe relay dashboard for shipping are :
 
 1. free: No additional cost, the default.
 2. flat_rate: A flat additional cost, regardless of the items ordered, the quantity, or the customer's geographic location. You can even opt to waive the shipping cost above a certain order total.
 3. callback: Determined on the fly per order.
-4. provider: Calculated using a third party shipping provider like [EasyPost](https://easypost.com/){:target="_blank"}.
+4. provider: Calculated using a third party shipping provider like [EasyPost](https://easypost.com/){:target="_blank"} or [Shippo](https://goshippo.com/){:target="_blank"}.
 
-First lets talk about all the 4 options.
+First, lets talk about all the 4 options.
 
 First option : free is self explanatory, means no shipping cost will be charged.
 
-Second flat_rate is for charging a flat amount regardless of items ordered, quantity or location which doesn't seems to be a good option because you cannot charge say $20 for the same item to be shipped in US or India.
+Second option : flat_rate is for charging a flat amount regardless of items ordered, quantity or location which doesn't seems to be a good option because you cannot charge say $20 for the same item to be shipped in US and India.
 
-Third is callback in which you provide a callback url which returns the shipping option to the order creation call and depending on the options returned by the callback, one of the shipping option can be set to the Stripe Order object and the amount associated with that option will be added to the total bill. This is the most flexible one.
+Third option : callback in which you provide a callback url which returns the shipping option to the order creation call and depending on the options returned by the callback, one of the shipping option can be set on the Stripe Order object and the amount associated with that option will be added to the total bill. This is the most flexible one.
 
-Fourth is provider wherein you choose one of the shipping providers supported by Stripe : [EasyPost](https://easypost.com/){:target="_blank"} and [Shippo](https://goshippo.com/){:target="_blank"} and with this option the shipping cost is automatically added based on source address, destination address, shipment dimension and weight.
+Fourth option : provider wherein you choose one of the shipping providers supported by Stripe : [EasyPost](https://easypost.com/){:target="_blank"} and [Shippo](https://goshippo.com/){:target="_blank"} and with this option the shipping cost is automatically added using the service you have opted for in the stripe dashboard's relay setting which is based on source address, destination address, shipment dimension and weight.
 
 In this blog I will be talking about option 3. I will be explaining some issues that I faced during writing a callback for custom shipping cost.
 
 But before that let me explain why we even went for option 3. First, when we integrated Stripe for payments we used option 4 which was very easy. You just have to update the `order` object created using [Stripe::Order API](https://stripe.com/docs/api#create_order){:target="_blank"} and then depending on the shipping option selected appropriate shipping amount is added to the total amount.
 
-However there is one issue which we faced with this approach due to the dimension of the product we were shipping. The dimensions of the product was :
+However, there is one issue which we faced with this approach due to the dimension of the product we were shipping. The dimensions of the product were :
 
-width: 10,
-
-length: 18,
-
-height: 24,
+width: 10, length: 18, height: 24
 
 weight: 114
 
-width, length, height in inches and weight in lbs.
+width, length, height are in inches and weight is in lbs.
 
-Everything was working fine for 1 or 2 qunatity of the item, shipping cost added to the total bill were also proper but we were really surprised to see price jump for quantity = 4. Below is the shipping cost listed for FedEx Ground Delivery for different quantities :
+Everything was working fine for 1 or 2 quantity of the item, shipping cost added to the total bill were also proper but we were really surprised to see price jump for quantity = 4. Below is the shipping cost listed for FedEx Ground Delivery for different quantities :
 
 1 : 17.66
 
@@ -58,9 +56,9 @@ Everything was working fine for 1 or 2 qunatity of the item, shipping cost added
 
 7 :
 
-And as you can see above the it didn't even returned any shipping amount for quantity 6 and 7.
+And as you can see above that the shipping API didn't even returned any shipping amount for quantity 6 and 7.
 
-I knew this issue is from FedEx side but still I contact Easypost support to get some guidance.
+I knew this issue is from FedEx side but still I contact Easypost support for some guidance related to this issue.
 
 The response I got from one of support staff of Easypost was :
 
@@ -70,13 +68,13 @@ The response I got from one of support staff of Easypost was :
 
 I then wrote to Stripe support suggesting an improvement : My request was
 
-> I would like suggest an improvement where-in for quantity > 1, shipping cost should be charged as (shipping cost for 1 items * n) for n quantity of product ordered, which can done by creating seperate shipment for each item.
+> I would like suggest an improvement where-in for quantity > 1, shipping cost should be charged as (shipping cost for 1 items * n) for n quantity of products ordered, which can done by creating seperate shipment for each item.
 
-> I am suggesting this because as per my product owner, each hardware box (our product that we ship through FedEx) is shipped as a separate shipment as of today. Means, if a person has ordered 3 quantities, it is sent as 3 shipment via FedEx which costs us "shipping cost for 1 item * 3".
+> I am suggesting this because as per my product owner, each hardware box (our product that we ship through FedEx) is shipped as separate shipment as of today. Means, if a person has ordered 3 quantities, it is sent as 3 different shipments via FedEx which costs us "shipping cost for 1 item * 3".
 
 > Since there is a limit for weight and length so, the Easypost/FedEx API will definitely cross that limit even if the product weight and dimension is small and quantities ordered is large.   
 
-> I hope that my suggestion makes.
+> I hope that my suggestion makes sense.
 
 The response I got from Stripe support was :
 
@@ -104,6 +102,8 @@ Sample code :
 
 <script src="https://gist.github.com/Amit-Thawait/a4763c81c42a8808b8f706f3ebf12cdc.js"></script>
 
+You can refer [Easypost API](https://github.com/EasyPost/easypost-ruby#easypost-ruby-client-library){:target="_blank"} and [Taxjar API](https://github.com/taxjar/taxjar-ruby#taxjar-ruby-gem--){:target="_blank"} to know more about easypost and taxjar api.
+
 Next, I tried integrating this in my website and found out that the request after running for around 20 seconds is getting timeout everytime.
 
 The API call for `Stripe::Order.create` was getting triggered, however the request was never reaching the next line which was `order.selected_shipping_method = 'custom_shipping'`.
@@ -130,9 +130,9 @@ I wrote about this behaviour to Stripe support and the response I got from Fred 
 
 > Just a quick thought here—are you by any chance running this under a single-threaded server such as Webrick? You may not be able to test shipping callbacks in that environment, as the request from Relay to your shipping endpoint will be blocked waiting for the POST request to your server to finish. You might want to look at using a different multi-process backend or pool in order to test this.
 
-That was it actually. I understood that the shipping cost callback is stuck waiting for Stripe::Order create call to finish while the Stripe::Order create call was waiting for a shipping_method to be set on `order` object which gets returned from shipping callback. So, it was a dead-lock case, both waiting for each other to finish which was resulting in Stripe API call timeout issue.
+That was it actually. I understood that the `shipping_cost` callback is stuck waiting for `Stripe::Order` create call to finish while the `Stripe::Order` create call was waiting for a `shipping_method` attribute to be set on `order` object which gets returned from shipping callback. So, it was a dead-lock case, both waiting for each other to finish which was resulting in Stripe API call timeout issue.
 
-I solved this by running 2 processes of thin server in localhost at 2 different ports and hardcoding the shipping json in callback.
+I solved this by running 2 processes of thin server in localhost at 2 different ports and hardcoding the shipping json in callback. Instead of fetching the shipping cost from Easypost I hardcoded it because I wanted to fix my first issue which was related to request timeout. Below are steps on how to do this.
 
 Add `gem thin` to your Gemfile. Run `bundle install` to install thin gem.
 
@@ -158,7 +158,7 @@ It will start a secure tunnels to your localhost which will look like this :
 	<figcaption align="middle">ngrok tunnel</figcaption>
 </p>
 
-Just copy the https tunnel URL and paste it in stripe dashboard business setting :
+Next, you need to copy the https tunnel URL and paste it in stripe dashboard business setting :
 
 <p align="middle">
 	<img src="../assets/images/stripe_custom_shipping/stripe_callback_setting.png" alt="callback setting">
@@ -166,13 +166,18 @@ Just copy the https tunnel URL and paste it in stripe dashboard business setting
 </p>
 
 The full callback URL should be something like `https://a06f1d8d.ngrok.io/stripe_payments/shipping_cost` which needs to be entered in callback field shown in the image.
+Here, as per rails convention, the above URL points to shipping_cost method of stripe_payments_controller.rb 
 
-Even after resolving this issue, I was getting timeout issue because when I replaced my hard-coded shipping option with the dynamic one, my shipping callback was actually taking more than 10 seconds because I was making 2 API calls internally, one for easypost and one for taxjar to get the appropriate shipping amount along with tax.
+After resolving this issue and replacing my hard-coded shipping option with the dynamic one, I was getting request timeout issue again because, my shipping callback was actually taking more than 10 seconds (nearly 12 seconds) because I was making 2 API calls internally, one for easypost and one for taxjar to get the appropriate shipping amount along with tax which you can see in shipping_cost.rb gist I have attached above.
 
-I solved this is doing this just before Stripe::Order create call, there by preventing timeout of 10 seconds.
+I solved this by firing these two API calls just before Stripe::Order create call, there by preventing timeout of 10 seconds.
 
 Sample order_update json looks like this
 
 <script src="https://gist.github.com/Amit-Thawait/7b624343d2c5a13297049808e62d4126.js"></script>
 
-You need to note that all the amounts mentioned here are in lowest denomination i.e; cents. Hence you need to be careful about passing only integer values in all the amount fields. Passing a float value (which got passed in my case in the amount field of tax_items becuase of multiplication of a float percent value with the item amount value) will result in an error : <span class="text-red">Order creation failed while contacting the provider</span>.
+You need to note that all the amounts mentioned here are in lowest denomination i.e; cents. Hence you need to be careful about passing only integer values in all the amount fields. Passing a float value (which got passed in my case in the amount field of tax_items because of multiplication of a float percent value with the item amount value) will result in an error : <span class="text-red">Order creation failed while contacting the provider</span>.
+
+If you are facing issues related to Stripe custom shipping callback and this post didn't helped in solving one then post a comment and I will try to help you out or else write to stripe support at support@stripe.com explaining your issue and they will definitely get back to you.
+
+I would like thank Fred (from Stripe Support) who helped me to get this working and even following back with me each time I was struck. 

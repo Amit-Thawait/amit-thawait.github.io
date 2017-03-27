@@ -1,7 +1,10 @@
 /*Custom width and height for gist */
 .gist {width:700px !important;}
 .gist-file
-.gist-data {max-height: 500px;max-width: 700px;}
+.gist-data {
+	/*max-height: 500px;*/
+	max-width: 700px;
+}
 
 .credits {
 	color: #424242;
