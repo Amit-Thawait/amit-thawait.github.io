@@ -7,7 +7,7 @@ tags: [js]
 comments: true
 ---
 
-Often there is required to write validations for a html form in a web page.
+No html form in a web page is complete without client side validations.
 
 The easiest way to do it is using [Parsley JS](http://parsleyjs.org/){:target="_blank"}.
 
@@ -32,9 +32,9 @@ Now to add [Parsley JS](http://parsleyjs.org/){:target="_blank"} to this form yo
 
 To make a form to use parsley, you need to add `data-parsley-validate` attribute to the form tag and add `required` attribute to all the elements which you want to make mandatory for the end user.
 
-There are many other built-in validators as well like you can check a field for only number inputs or check for min length, max length, check for a specific patterns etc. For a detailed set  of available options refer : [Build-in Validators](http://parsleyjs.org/doc/index.html#validators-list){:target="_blank"} 
+There are many other built-in validators as well, like you can check a field for only number inputs or check for min length, max length, check for a specific patterns etc. For a detailed set of available options refer : [Build-in Validators](http://parsleyjs.org/doc/index.html#validators-list){:target="_blank"} 
 
-Next, you need to call the function parsley() in the form object like this :
+Next, you need to call the function `parsley()` in the form object like this :
 
 	$('#demo-form').parsley();
 
@@ -51,16 +51,18 @@ After you click on validate, it will look something like this :
 
 There are some parsley functions that you need to keep in mind which I found very helpful :
 
-1. Let's say at any time if you want to validate a form either on click of a button or something else, then just call the `validate()` function on that form.
+1. Let's say at any given time if you want to validate a form either on click of a button or something else, then just call the `validate()` function on that form.
 
 		$('#demo-form').validate();
 
-2. Let's say at any time if you want to check if a form is valid at any point, then just check it by using `isValid()` function
+2. Let's say at any given time if you want to check if a form is valid or not, then just check it by using `isValid()` function
 
 		$('#demo-form').isValid()
 
-`isValid()` will return `true` or `false` depending on user's input.
+`isValid()` will return `true` or `false` depending on user's input entered in the form.
 
 There are lots of examples in their example section, do check it out for more at [Parsley JS Examples](http://parsleyjs.org/doc/examples.html){:target="_blank"} page.
+
+For their detailed documentation refer [Parsley JS Documentation](http://parsleyjs.org/doc/index.html){:target="_blank"}.
 
 That's how simple it is to integrate parsley js to a html form. I hope you found it useful.
