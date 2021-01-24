@@ -17,7 +17,7 @@ ACM infact keeps in mind developing nations and gives membership at a pretty rea
 
 Besides O'Reilly, ACM gives membership to some other learning resources/publications as well but access to O'Reilly itself is good enough reason to join ACM.
 
-To join ACM visit : https://www.acm.org/
+To join ACM visit : [https://www.acm.org/](https://www.acm.org/){:target="_blank"}
 
 Click on "**Join**" as shown below
 
