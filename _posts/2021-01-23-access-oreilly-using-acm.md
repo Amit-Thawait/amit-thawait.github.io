@@ -1,5 +1,5 @@
 ---
-title: Access O'Reilly and many other learning platforms using ACM
+title: Access O'Reilly learning platform using ACM
 layout: post
 published: true
 category: programming
@@ -14,6 +14,8 @@ This can be done by reading books, watching video courses, attending conferences
 Of all these you can cover "reading books" and some part of "watching video courses" by using ACM (Association for Computing Machinery) membership.
 
 ACM infact keeps in mind developing nations and gives membership at a pretty reasonable cost. This is a really awesome gesture by ACM.
+
+Besides O'Reilly, ACM gives membership to some other learning resources/publications as well but access to O'Reilly itself is good enough reason to join ACM.
 
 To join ACM visit : https://www.acm.org/
 
@@ -54,7 +56,7 @@ You can fillup rest of the form and complete the payment process and choose the 
 
 After you have finished the membership process then comes the login part which is not clearly visible, hence I will help with some screenshots here.
 
-To Access your ACM Account:
+<ins>**To Access your ACM Account:**<ins>
 
 1. Click on myACM link located at top right section of the page as shown below.
 
@@ -74,51 +76,40 @@ To Access your ACM Account:
         <img src="/assets/images/oreilly_using_acm/acm-login.png" alt="ACM Login" class="img-responsive img-thumbnail">
     </p>
 
-To Access O'Reilly learning platform:
-
-There are 2 ways to access O'Reilly, first is via myACM account page and second is via ACM homepage.
-
-#### Via myACM account page:
----
 <br/>
 
-1. After login to myACM, scroll down on your account page and click on "**O'Reilly Learning Platform**"
+<ins>**To Access O'Reilly learning platform please follow the below mentioned steps:**<ins>
+
+1. Go to ACM learning center:
+
+    There are 2 ways to go to learning center, first is via myACM account page and second is via ACM homepage.
+
+    * <ins>Via myACM account page:<ins>
+
+    After login to myACM, scroll down on your account page and click on "**Learning Center**"
 
     <p align="middle">
         <img src="/assets/images/oreilly_using_acm/oreilly-myaccount.png" alt="OReilly via my account" class="img-responsive img-thumbnail">
     </p>
 
-2. Click on "**O'Reilly**" tab on the top left header section.
+    OR
 
-    <p align="middle">
-        <img src="/assets/images/oreilly_using_acm/oreilly.png" alt="O'Reilly" class="img-responsive img-thumbnail">
-    </p>
+    * <ins>Via ACM home page:<ins>
 
-After clicking on "O'Reilly" tab, you will land into homepage of O'Reilly learning platform.
-
-<p align="middle">
-    <img src="/assets/images/oreilly_using_acm/oreilly-dashboard.png" alt="O'Reilly Dashboard" class="img-responsive img-thumbnail">
-</p>
-
-   OR
-
-#### Via ACM home page:
----
-<br/>
-
-1. Go to homepage and click on "**Learning**" tab in the header menu options
+    Go to homepage and click on "**Learning**" tab in the header menu options and then click on "**Learning Center Home**"
 
     <p align="middle">
         <img src="/assets/images/oreilly_using_acm/oreilly-homepage.png" alt="OReilly via homepage" class="img-responsive img-thumbnail">
     </p>
 
+
 2. Click on "**O'Reilly**" tab on the top left header section.
 
     <p align="middle">
         <img src="/assets/images/oreilly_using_acm/oreilly.png" alt="O'Reilly" class="img-responsive img-thumbnail">
     </p>
 
-3. Incase your myACM session is not active, O'Reilly will show up a login page where you can use your ACM credentials.
+3. O'Reilly will show up a login page where you can use your ACM credentials.
 
     <p align="middle">
         <img src="/assets/images/oreilly_using_acm/oreilly-sso.png" alt="O'Reilly SSO" class="img-responsive img-thumbnail">
@@ -132,6 +123,7 @@ After entering your credentials, you will land into homepage of O'Reilly learnin
 
 That's all you need to do. Happy Learning :)
 
+<br/>
 
 # I am already having ACM membership but facing issues during accessing O'Reilly platform
 ---
