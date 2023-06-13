@@ -1,6 +1,8 @@
 amit-thawait.github.io
 ----------------------
 
+### My techincal blog
+
 ### Setup Prerequisites :
 
 Ruby 2.3.1
